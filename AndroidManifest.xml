@@ -4,7 +4,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="4"
         android:targetSdkVersion="15" />
     
     <application
@@ -12,19 +12,28 @@
         android:label="@string/app_name">        
 
 		<service
-		  android:name=".ScreenFilterService"
-		  android:label="@string/service_name">
+		  android:name=".FilterService"
+		  android:label="@string/service_name"
+		  android:enabled="true">
 		</service> 
         <activity
-            android:name=".MainActivity"
+            android:name=".FilterActivity"
             android:label="@string/title_activity_main" 
-            android:theme="@style/Theme.Transparent" >
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" 
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity 
+            android:label="@string/app_name" 
+            android:name=".Preferences" 
+            android:excludeFromRecents="true" 
+            android:launchMode="singleTop" 
+            android:configChanges="keyboardHidden|orientation" />
     </application>
-
+    <!--  This permission is required to add the toastView to system window manager -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 </manifest>

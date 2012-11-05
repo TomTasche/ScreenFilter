@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="PreferencesLayout">false</item>
+    <item type="id" name="TextView01">false</item>
+    <item type="id" name="SliderTable">false</item>
+    <item type="id" name="BrightnessEdit">false</item>
+    <item type="id" name="BrightnessSeekBar">false</item>
+    <item type="id" name="BrightnessPercentage">false</item>
+    <item type="id" name="ExampleText">false</item>
+    <item type="id" name="SoftKeysEnabled">false</item>
+    <item type="id" name="PreferencesBrightnessSelector">false</item>
+    <item type="id" name="DontSaveSettingButton">false</item>
+    <item type="id" name="SaveSettingButton">false</item>
+    <item type="id" name="ReenableButton">false</item>
+    <item type="id" name="ToggleImage">false</item>
+    <item type="id" name="WidgetToggleText">false</item>
+    <item type="id" name="twofortyfouram_locale_dialog_primary_message">false</item>
+    <item type="id" name="twofortyfouram_locale_dialog_secondary_message">false</item>
+    <item type="id" name="twofortyfouram_locale_menu_help">false</item>
+    <item type="id" name="twofortyfouram_locale_menu_dontsave">false</item>
+    <item type="id" name="twofortyfouram_locale_menu_save">false</item>
+</resources>

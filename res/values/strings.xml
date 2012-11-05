@@ -1,9 +1,39 @@
 <resources>
-
-    <string name="app_name">ScreenFilter</string>
     <string name="service_name">FilterService</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">FilterActivity</string>
 
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Filter</string>
+
+    <string name="twofortyfouram_locale_application_not_available">Application is not installed.</string>
+    <string name="twofortyfouram_locale_breadcrumb_format">%1$s%2$s%3$s</string>
+    <string name="twofortyfouram_locale_breadcrumb_separator">" > "</string>
+    <string name="twofortyfouram_locale_marketactivity_dialog_title"><i>Locale</i> Required</string>
+    <string name="twofortyfouram_locale_marketactivity_dialog_button_install">Install</string>
+    <string name="twofortyfouram_locale_marketactivity_dialog_primary_message"><i>Locale</i> is required to use this plug-in. Would you like to install <i>Locale</i>?</string>
+    <string name="twofortyfouram_locale_marketactivity_dialog_secondary_message">Tap \"Install\" to find <i>Locale</i> on the Android Market.</string>
+    <string name="app_name">Screen Filter</string>
+    <string name="filter_enabled">Screen Filter enabled: %.1f%%</string>
+    <string name="filter_disabled">Screen Filter disabled</string>
+    <string name="test_text">This test text usually displays in 100% white. This shows you how the filter parameters you have specified will look once you have activated the Screen Filter app.</string>
+    <string name="brightness_desc">Adjust filter brightness</string>
+    <string name="enabled">Enabled</string>
+    <string name="widget_loading">\?</string>
+    <string name="click_to_adjust">Select to disable and adjust: %.1f%%</string>
+    <string name="click_to_disable">Select to disable: %.1f%%</string>
+    <string name="reenable_button">Enable Screen Filter</string>
+    <string name="softkey_option">Enable soft-key backlight</string>
+    <string name="notification_option">Show notification icon</string>
+    <string name="save_setting">Save</string>
+    <string name="dont_save_setting">Cancel</string>
+    <string name="locale_blurb">%.1f%%</string>
+    <string name="warning_title">Screen Filter Warning</string>
+    <string name="warning_message">Your new brightness setting of %.1f%% may be too dark to see. Please confirm or it will be reset in 10 seconds.</string>
+    <string name="locale_softkeys_on_blurb">Soft-keys On</string>
+    <string name="locale_softkeys_off_blurb">Soft-keys Off</string>
+    <string name="startup_notification">Starting up</string>
+    <string name="widget_title">%.1f%%</string>
+    <string name="edit_button">Edit</string>
+    <string name="edit_brightness">Set Brightness</string>
+    <string name="edit_brightness_message" formatted="false">Input a brightness percentage integer between 0% and 100%.</string>
+    
 </resources>

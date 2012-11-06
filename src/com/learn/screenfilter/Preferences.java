@@ -6,42 +6,44 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 public class Preferences extends Activity {
-	private static final String LOGNAME = "ScreenFilter:Preferences"; 
+	private static final String TAG = "ScreenFilter:Preferences"; 
 	private SharedPreferences prefs;
-	  //private BrightnessSelector selector;
+	  private BrightnessSelector selector;
 
 	  protected void onCreate(Bundle paramBundle)
 	  {
 	    super.onCreate(paramBundle);
-	    Log.d(LOGNAME, "onCreate");
+	    Log.d(TAG, "onCreate");
 	    onNewIntent(getIntent());
 	  }
 
 	  public void onNewIntent(Intent paramIntent)
 	  {
-	    Log.d(LOGNAME, "onNewIntent");
+	    Log.d(TAG, "onNewIntent");
 	    this.prefs = getSharedPreferences("preferences", 0);
 	    FilterActivity.hideFilter(this, false);
-	    /*
-	    setContentView(2130903043);
-	    ((Button)findViewById(2131230731)).setOnClickListener(new ReenableListener(null));
-	    int i = ScreenFilter.getBrightness(this);
-	    this.selector = ((BrightnessSelector)findViewById(2131230728));
+	    
+	    setContentView(R.layout.preferences);
+	    ((Button)findViewById(R.id.ReenableButton)).setOnClickListener(new ReenableListener());	    
+	    
+	    int i = FilterActivity.getBrightness(this);
+	    this.selector = ((BrightnessSelector)findViewById(R.id.PreferencesBrightnessSelector));
 	    this.selector.setProgress(i);
 	    this.selector.setSoftKeysEnabled(this.prefs.getBoolean("SOFT_KEYS_ENABLED", true));
-	    */
+	    
 	    setContentView(R.layout.preferences);
 	  }
 
 	  protected void onPause()
 	  {
 	    super.onPause();
-	    Log.d(LOGNAME, "onPause");
-	    // this.prefs.edit().putInt("NEW_BRIGHTNESS", this.selector.getProgress()).putBoolean("SOFT_KEYS_ENABLED", this.selector.isSoftKeysEnabled()).remove("TOO_LOW_CONFIRMED").commit();
+	    Log.d(TAG, "onPause");
+	    //this.prefs.edit().putInt("NEW_BRIGHTNESS", this.selector.getProgress()).putBoolean("SOFT_KEYS_ENABLED", this.selector.isSoftKeysEnabled()).remove("TOO_LOW_CONFIRMED").commit();
 	    this.prefs.edit()
-	    			.putInt("NEW_BRIGHTNESS", 60)
+	    			.putInt("NEW_BRIGHTNESS", this.selector.getProgress())
 	    			.putBoolean("SOFT_KEYS_ENABLED", false)
 	    			.remove("TOO_LOW_CONFIRMED").commit();
 	    finish();
@@ -50,14 +52,11 @@ public class Preferences extends Activity {
 	  private class ReenableListener
 	    implements View.OnClickListener
 	  {
-	    private ReenableListener()
-	    {
-	    }
-
 	    public void onClick(View paramView)
 	    {
-	      Preferences.this.startActivity(new Intent(Preferences.this, FilterActivity.class));
-	      Preferences.this.finish();
+	    	Log.d(TAG, "Reenabling with new setting");
+	    	Preferences.this.startActivity(new Intent(Preferences.this, FilterActivity.class));
+	    	Preferences.this.finish();
 	    }
 	  }
 }

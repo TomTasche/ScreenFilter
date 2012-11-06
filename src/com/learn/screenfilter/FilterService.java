@@ -12,7 +12,7 @@ import android.widget.Toast;
 public class FilterService extends Service {
 	private static final String LOGNAME = "ScreenFilter:FilterService"; 
 	private final IBinder mBinder = new LocalBinder();
-	private final int mID = 11223344;
+	private final int mID = 1234;
 	private NotificationManager mNM;
 	
 	@Override

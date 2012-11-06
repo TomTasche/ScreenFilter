@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,7 +31,9 @@ import android.widget.Toast;
 public class FilterActivity extends Activity {
     private static final String LOGNAME = "ScreenFilter:FilterActivity"; 
     private static int currentProgress = -1;
+    //! This flag indicate whether the activity is activated by widget (true). false if activated by launcher
     private static boolean directlyInitiated = false;
+    //! This is the view that simulate the filter glass
     private static View toastView;
     private static WindowManager windowManager = null;
 	  
@@ -148,9 +151,6 @@ public class FilterActivity extends Activity {
         double percentage = 100.0D * computeAlpha(currentProgress) / 255.0D;
         Formatter localFormatter1 = new Formatter();
         String str1 = paramContext.getString(R.string.filter_enabled);
-        Notification localNotification = new Notification(R.string.app_name, localFormatter1.format(str1, Double.valueOf(percentage)).toString(), System.currentTimeMillis());
-        localNotification.flags = (Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT | localNotification.flags);
-
         String str2;
         String str3;
         Formatter localFormatter2 = new Formatter();
@@ -163,18 +163,33 @@ public class FilterActivity extends Activity {
         Log.d(LOGNAME, "Notification message: " + str3);        
         
         Intent localIntent;
-        if (directlyInitiated)
+        if (!directlyInitiated)
         {
         	// Invoke the setting dialog
+        	Log.d(LOGNAME, "Click will invoke preference");   
         	localIntent = new Intent(paramContext, Preferences.class);
         }
         else
         {
+        	Log.d(LOGNAME, "Click will invoke Filter with 100% brightness"); 
         	// Wake the main activity with a new brightness setting
         	localIntent = new Intent(paramContext, FilterActivity.class);
         	localIntent.putExtra("NEW_BRIGHTNESS", 100);
         }
-        localNotification.setLatestEventInfo(paramContext, paramContext.getString(2131099655), str3, PendingIntent.getActivity(paramContext, 0, localIntent, 0));
+
+        
+        Notification localNotification = new NotificationCompat.Builder(paramContext)        
+									        .setContentTitle(localFormatter1.format(str1, Double.valueOf(percentage)).toString())
+									        .setContentText(str3)
+									        .setSmallIcon(R.drawable.ic_launcher)
+									        .setOngoing(true)
+									        .setContentIntent(PendingIntent.getActivity(paramContext, 0, localIntent, 0))
+									        .build();
+        /*
+        Notification localNotification = new Notification(R.drawable.ic_launcher, localFormatter1.format(str1, Double.valueOf(percentage)).toString(), System.currentTimeMillis());									
+        localNotification.flags = (Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT | localNotification.flags);        
+        localNotification.setLatestEventInfo(paramContext, paramContext.getString(R.string.app_name), str3, PendingIntent.getActivity(paramContext, 0, localIntent, 0));
+        */
         return localNotification;
     }
     
@@ -190,8 +205,22 @@ public class FilterActivity extends Activity {
 	
 	public static int getBrightness(Context paramContext)
 	{
-		// TODO: get brightness from preference/setting
-		return 70;
+	    SharedPreferences localSharedPreferences = paramContext.getSharedPreferences("preferences", 0);
+	    int i = localSharedPreferences.getInt("BRIGHTNESS", -1);
+	    int j = localSharedPreferences.getInt("NEW_BRIGHTNESS", -1);
+	    if ((i != -1) && (j == -1))
+	    {
+	      j = invertAlpha(Math.round(255.0F * (i / 100.0F)));
+	      Log.d("ScreenFilter", "Migrating preferences.");
+	      SharedPreferences.Editor localEditor = localSharedPreferences.edit();
+	      localEditor.putInt("NEW_BRIGHTNESS", j);
+	      localEditor.remove("BRIGHTNESS");
+	      localEditor.commit();
+	    }
+	    else if (j == -1)
+	    	j = 82;
+	    
+	    return j;	    
 	}
 	
 	private boolean shouldShowWarning(int paramInt)
@@ -209,9 +238,9 @@ public class FilterActivity extends Activity {
 	{
 		Log.d(LOGNAME, "showFilter");
 		showToast(paramInt, paramBoolean);
-		Intent localIntent = new Intent("com.haxor.ScreenFilter.ACTION_FILTER_TOGGLED");
+		/*Intent localIntent = new Intent("com.haxor.ScreenFilter.ACTION_FILTER_TOGGLED");
 		localIntent.putExtra("com.haxor.ScreenFilter.ACTION_FILTER_TOGGLED_EXTRA", true);
-		sendBroadcast(localIntent);
+		sendBroadcast(localIntent);*/
 	}	
 	
 	public static void hideFilter(Context context, boolean enabling)
@@ -226,9 +255,9 @@ public class FilterActivity extends Activity {
 	    		context.stopService(new Intent(context, FilterService.class));
 	    		Toast.makeText(context, "Filter stopping service", Toast.LENGTH_SHORT).show();
 	    	}
-	    	Intent localIntent = new Intent("com.haxor.ScreenFilter.ACTION_FILTER_TOGGLED");
+	    	/*Intent localIntent = new Intent("com.haxor.ScreenFilter.ACTION_FILTER_TOGGLED");
 	    	localIntent.putExtra("com.haxor.ScreenFilter.ACTION_FILTER_TOGGLED_EXTRA", false);
-	    	context.sendBroadcast(localIntent);
+	    	context.sendBroadcast(localIntent);*/
 	    }
 	}
 	
@@ -301,6 +330,18 @@ public class FilterActivity extends Activity {
 		Log.i(LOGNAME, "Background alpha=" + i);
 		// TODO: Make the color of the filter configurable
 		return new ColorDrawable(Color.argb(i, 100, 0, 0));
-  }	
+	}
+	
+	public static double computePercentage(int paramInt)
+	{
+		return 100.0D * computeAlpha(paramInt) / 255.0D;
+	}	
+	
+	  public static int invertAlpha(int paramInt)
+	  {
+	    long l = Math.max(0L, Math.min(100L, Math.round(100.0D * (1.0D + Math.log(paramInt / 255.0D) / 4.0D))));
+	    Log.d(LOGNAME, "Inverted alpha=" + paramInt + " to progress=" + l);
+	    return (int)l;
+	  }	
 	
 }

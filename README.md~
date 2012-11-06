@@ -23,7 +23,7 @@ Some behaviors of the ScreenFilter apps:
 TODO:
 Major:
 - The button to reenable filter after setting change doesn't work.
-  Eventhough the ReenableListener is registered.
+  Eventhough the Listener is registered.
 
 Enhancement:
 - Add color selection screen

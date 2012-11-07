@@ -15,10 +15,12 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -29,9 +31,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class FilterActivity extends Activity {
-    private static final String LOGNAME = "ScreenFilter:FilterActivity"; 
+    private static final String TAG = "ScreenFilter:FilterActivity"; 
     private static int currentProgress = -1;
-    //! This flag indicate whether the activity is activated by widget (true). false if activated by launcher
+    //! This flag indicates whether the activity is activated by widget (true). false if activated by launcher
     private static boolean directlyInitiated = false;
     //! This is the view that simulate the filter glass
     private static View toastView;
@@ -40,105 +42,80 @@ public class FilterActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);        
-        Log.d(LOGNAME, "onCreate");
+        Log.d(TAG, "onCreate");
         onNewIntent(getIntent());        
     }
     
     public void onDestroy() {
     	super.onDestroy();
-        Log.d(LOGNAME, "onDestroy; isFinishing=" + isFinishing());
+        Log.d(TAG, "onDestroy; isFinishing=" + isFinishing());
     }
     
-    protected void onPause()
-    {
+    protected void onPause() {
       super.onPause();
-      Log.d(LOGNAME, "onPause");
+      Log.d(TAG, "onPause");
     }    
     
     public void onNewIntent(Intent paramIntent) {
-        //const/4 v9, -0x1
-        //const/4 v12, 0x1
-        //const/4 v10, 0x0
-        //const/4 v6, 0x0
-
-    	Log.d(LOGNAME, "onNewIntent");
+    	Log.d(TAG, "onNewIntent");
     	int progress = paramIntent.getIntExtra("NEW_BRIGHTNESS", -1);
 
         boolean enabling = false;
         boolean skipWarning = false;
         
-        if (progress == -1) // :cond_4
-        {
+        if (progress == -1) {
         	progress = getBrightness(this);
-        	Log.d(LOGNAME, "User-initiated filter; progress=" + progress);
+        	Log.d(TAG, "User-initiated filter; progress=" + progress);
 
-            if (toastView == null) //:cond_3
+            if (toastView == null) 
                 enabling = true;
-            else // :cond_3
+            else 
                 enabling = false;            
-        }
-        else    // progress != -1 :cond_4
-        {
-            Log.d(LOGNAME, "Directly-initiated filter; progress=" + progress);
-            if (progress < 100)  // if-ge v5, 100,  :cond_5
-            {
-                enabling = true;
-            }
-            else // :cond_5
-            {
+        } else {
+            Log.d(TAG, "Directly-initiated filter; progress=" + progress);
+            if (progress < 100) 
+                enabling = true;          
+            else 
                 enabling = false;
-            }
+            
             skipWarning = true;            
         }
         
         boolean softKeysEnabled = false;
-        if (paramIntent.hasExtra("SOFT_KEYS_ENABLED") != false) // :cond_6
-        {
+        if (paramIntent.hasExtra("SOFT_KEYS_ENABLED") != false) {
             softKeysEnabled = paramIntent.getBooleanExtra("SOFT_KEYS_ENABLED", true);
         }
-        else //  :cond_6
-        {
+        else {
             SharedPreferences prefs = getSharedPreferences("preferences", 0);
             softKeysEnabled = prefs.getBoolean("SOFT_KEYS_ENABLED", false);
         }
         
-        if (windowManager == null) //  if-nez v8, :cond_0
-        {
-            try //:try_start_0
-            {	
+        if (windowManager == null) {
+            try {	
             	windowManager = (WindowManager)Class.forName("android.view.WindowManagerImpl").getMethod("getDefault", new Class[0]).invoke(null, new Object[0]);
-            } // :try_end_0
-            catch (Exception localException) // :catch_0
-            {
-                Log.e(LOGNAME, "Error getting WindowManager", localException);
+            } catch (Exception ex) {
+                Log.e(TAG, "Error getting WindowManager", ex);
             }        
         } 
         
-        Log.d(LOGNAME, "Check toastView");
-        if (toastView != null)  // if-eqz v8, :cond_1
-        {
+        Log.d(TAG, "Check toastView");
+        if (toastView != null)  {
             hideFilter(this, enabling);
-        } 
-        else // :cond_1
-        {   
-        	if (enabling != false) // if-eqz v2, :cond_2
-            {
-        		Log.d(LOGNAME, "Enabling filter service");
+        } else {   
+        	if (enabling != false) {
+        		Log.d(TAG, "Enabling filter service");
                 currentProgress = progress;
                 directlyInitiated = skipWarning;
                 showFilter(progress, softKeysEnabled);
                 startService(new Intent(this, FilterService.class));
-            } // :cond_2
+            } 
         }
-        
-        // windowManager != null // :cond_0
-        if (skipWarning == false && shouldShowWarning(progress) != false) //  if-nez v6, :cond_7, if-eqz v8, :cond_7
-        {
+              
+        if (skipWarning == false && shouldShowWarning(progress) != false) {
             showWarning(progress);
         }
-        else //   :cond_7
-        {	
-            Log.d(LOGNAME, "No warning required; finishing activity");
+        else {	
+            Log.d(TAG, "No warning required; finishing activity");
             finish();
         }
            
@@ -147,55 +124,46 @@ public class FilterActivity extends Activity {
     
     public static Notification getNotification(Context paramContext)
     {
-    	Log.d(LOGNAME, "getNotification"); 
+    	Log.d(TAG, "getNotification"); 
         double percentage = 100.0D * computeAlpha(currentProgress) / 255.0D;
-        Formatter localFormatter1 = new Formatter();
+        Formatter formatter1 = new Formatter();
         String str1 = paramContext.getString(R.string.filter_enabled);
         String str2;
         String str3;
-        Formatter localFormatter2 = new Formatter();
+        Formatter formatter2 = new Formatter();
         if (directlyInitiated)
         	str2 = paramContext.getString(R.string.click_to_disable);
         else
         	str2 = paramContext.getString(R.string.click_to_adjust);
         
-        str3 = localFormatter2.format(str2, Double.valueOf(percentage)).toString();
-        Log.d(LOGNAME, "Notification message: " + str3);        
+        str3 = formatter2.format(str2, Double.valueOf(percentage)).toString();
+        Log.d(TAG, "Notification message: " + str3);        
         
         Intent localIntent;
-        if (!directlyInitiated)
-        {
+        if (!directlyInitiated) {
         	// Invoke the setting dialog
-        	Log.d(LOGNAME, "Click will invoke preference");   
+        	Log.d(TAG, "Click will invoke preference");   
         	localIntent = new Intent(paramContext, Preferences.class);
-        }
-        else
-        {
-        	Log.d(LOGNAME, "Click will invoke Filter with 100% brightness"); 
+        } else {
+        	Log.d(TAG, "Click will invoke Filter with 100% brightness"); 
         	// Wake the main activity with a new brightness setting
         	localIntent = new Intent(paramContext, FilterActivity.class);
         	localIntent.putExtra("NEW_BRIGHTNESS", 100);
         }
-
         
-        Notification localNotification = new NotificationCompat.Builder(paramContext)        
-									        .setContentTitle(localFormatter1.format(str1, Double.valueOf(percentage)).toString())
+        Notification noti = new NotificationCompat.Builder(paramContext)        
+									        .setContentTitle(formatter1.format(str1, Double.valueOf(percentage)).toString())
 									        .setContentText(str3)
 									        .setSmallIcon(R.drawable.ic_launcher)
 									        .setOngoing(true)
 									        .setContentIntent(PendingIntent.getActivity(paramContext, 0, localIntent, 0))
 									        .build();
-        /*
-        Notification localNotification = new Notification(R.drawable.ic_launcher, localFormatter1.format(str1, Double.valueOf(percentage)).toString(), System.currentTimeMillis());									
-        localNotification.flags = (Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT | localNotification.flags);        
-        localNotification.setLatestEventInfo(paramContext, paramContext.getString(R.string.app_name), str3, PendingIntent.getActivity(paramContext, 0, localIntent, 0));
-        */
-        return localNotification;
+
+        return noti;
     }
     
-    public static void hideNotification(Context paramContext)
-    {
-    	((NotificationManager)paramContext.getSystemService("notification")).cancel(1);
+    public static void hideNotification(Context context) {
+    	((NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE)).cancel(1);
     }    
 
 	public static int computeAlpha(int paramInt)
@@ -236,11 +204,8 @@ public class FilterActivity extends Activity {
 		
 	private void showFilter(int paramInt, boolean paramBoolean)
 	{
-		Log.d(LOGNAME, "showFilter");
+		Log.d(TAG, "showFilter");
 		showToast(paramInt, paramBoolean);
-		/*Intent localIntent = new Intent("com.haxor.ScreenFilter.ACTION_FILTER_TOGGLED");
-		localIntent.putExtra("com.haxor.ScreenFilter.ACTION_FILTER_TOGGLED_EXTRA", true);
-		sendBroadcast(localIntent);*/
 	}	
 	
 	public static void hideFilter(Context context, boolean enabling)
@@ -255,15 +220,12 @@ public class FilterActivity extends Activity {
 	    		context.stopService(new Intent(context, FilterService.class));
 	    		Toast.makeText(context, "Filter stopping service", Toast.LENGTH_SHORT).show();
 	    	}
-	    	/*Intent localIntent = new Intent("com.haxor.ScreenFilter.ACTION_FILTER_TOGGLED");
-	    	localIntent.putExtra("com.haxor.ScreenFilter.ACTION_FILTER_TOGGLED_EXTRA", false);
-	    	context.sendBroadcast(localIntent);*/
 	    }
 	}
 	
 	private void showToast(int progress, boolean softKeysEnabled)
 	{ 
-		Log.d(LOGNAME, "showToast");
+		Log.d(TAG, "showToast");
 		toastView = ((LayoutInflater)getSystemService("layout_inflater"))
 				.inflate(R.layout.transient_notification, null);
 		toastView.setFocusable(false);
@@ -274,32 +236,26 @@ public class FilterActivity extends Activity {
 		toastView.setFocusableInTouchMode(false);
 		toastView.setBackgroundDrawable(getBackgroundDrawable(progress));
 	    	
-		try // :try_start_0
-		{
-		      Class[] arrayOfClass = new Class[1];
-		      arrayOfClass[0] = Boolean.TYPE;
-		      Method localMethod = View.class.getMethod("setFilterTouchesWhenObscured", arrayOfClass);
+		try {
+		      Method localMethod = View.class.getMethod("setFilterTouchesWhenObscured", Boolean.TYPE);
 		      View localView = toastView;
-		      Object[] arrayOfObject = new Object[1];
-		      arrayOfObject[0] = Boolean.valueOf(false);
-		      localMethod.invoke(localView, arrayOfObject);
-		}	// :try_end_0
-		// .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_0} :catch_0
-		catch (Exception ex) // :catch_0
-		{
-			Log.w(LOGNAME, "Cannot setFilterTouchesWhenObscured");
+		      localMethod.invoke(localView, Boolean.valueOf(false));
+		} catch (Exception ex) {
+			Log.w(TAG, "Cannot setFilterTouchesWhenObscured");
 		}	
 
 		WindowManager.LayoutParams localLayoutParams;
 		localLayoutParams = new WindowManager.LayoutParams();
 		localLayoutParams.height = -1;
 		localLayoutParams.width = -1;
-		localLayoutParams.flags = 280;
-		localLayoutParams.format = -3;
-		localLayoutParams.windowAnimations = 16973828;
-		localLayoutParams.type = 2006;
+		localLayoutParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN 
+					| WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE 
+					| WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+		localLayoutParams.format = PixelFormat.TRANSLUCENT;
+		localLayoutParams.windowAnimations = 0x1030004;
+		localLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
 		localLayoutParams.setTitle("Toast");
-		localLayoutParams.gravity = 119;
+		localLayoutParams.gravity = Gravity.FILL;
 		localLayoutParams.x = 0;
 		localLayoutParams.y = 0;
 		localLayoutParams.verticalWeight = 1.0F;
@@ -307,41 +263,33 @@ public class FilterActivity extends Activity {
 		localLayoutParams.verticalMargin = 0.0F;
 		localLayoutParams.horizontalMargin = 0.0F;
 		
-		if (softKeysEnabled)  // if-nez p2, :cond_0
-		{    
-			try  // :try_start_1
-			{
+		if (softKeysEnabled)  {    
+			try  {
 				WindowManager.LayoutParams.class.getField("buttonBrightness").set(localLayoutParams, Integer.valueOf(0));
-			} // :try_end_1
-			// .catch Ljava/lang/Exception; {:try_start_1 .. :try_end_1} :catch_1
-			catch (Exception ex) // :catch_1
-			{
-				Log.w(LOGNAME, "Cannot set button brightness");
+			} catch (Exception ex) {
+				Log.w(TAG, "Cannot set button brightness");
 			}
-		} // :cond_0
+		} 
 		
 		windowManager.addView(toastView, localLayoutParams);
 		return;
 	}   
 	
-	private Drawable getBackgroundDrawable(int paramInt)
-	{
+	private Drawable getBackgroundDrawable(int paramInt) {
 		int i = 255 - computeAlpha(paramInt);
-		Log.i(LOGNAME, "Background alpha=" + i);
+		Log.i(TAG, "Background alpha=" + i);
 		// TODO: Make the color of the filter configurable
 		return new ColorDrawable(Color.argb(i, 100, 0, 0));
 	}
 	
-	public static double computePercentage(int paramInt)
-	{
+	public static double computePercentage(int paramInt) {
 		return 100.0D * computeAlpha(paramInt) / 255.0D;
 	}	
 	
-	  public static int invertAlpha(int paramInt)
-	  {
-	    long l = Math.max(0L, Math.min(100L, Math.round(100.0D * (1.0D + Math.log(paramInt / 255.0D) / 4.0D))));
-	    Log.d(LOGNAME, "Inverted alpha=" + paramInt + " to progress=" + l);
+	public static int invertAlpha(int paramInt) {
+		long l = Math.max(0L, Math.min(100L, Math.round(100.0D * (1.0D + Math.log(paramInt / 255.0D) / 4.0D))));
+	    Log.d(TAG, "Inverted alpha=" + paramInt + " to progress=" + l);
 	    return (int)l;
-	  }	
+	}	
 	
 }

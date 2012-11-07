@@ -14,9 +14,4 @@
     <item type="id" name="ReenableButton">false</item>
     <item type="id" name="ToggleImage">false</item>
     <item type="id" name="WidgetToggleText">false</item>
-    <item type="id" name="twofortyfouram_locale_dialog_primary_message">false</item>
-    <item type="id" name="twofortyfouram_locale_dialog_secondary_message">false</item>
-    <item type="id" name="twofortyfouram_locale_menu_help">false</item>
-    <item type="id" name="twofortyfouram_locale_menu_dontsave">false</item>
-    <item type="id" name="twofortyfouram_locale_menu_save">false</item>
 </resources>

@@ -34,7 +34,7 @@ public class FilterService extends Service {
 	    {
 	    	// Fall back to the old API    		
 			Log.w(LOGNAME, "Error calling startForeground");    		
-    		//setForeground(true); // For API level < 5
+    		// setForeground(true); // For API level < 5
     		mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
     		mNM.notify(mID, localNotification);
 	    }
@@ -52,12 +52,10 @@ public class FilterService extends Service {
 	
 	public class LocalBinder extends Binder
 	{
-		public LocalBinder()
-		{
+		public LocalBinder() {
 		}
 
-		FilterService getService()
-		{
+		FilterService getService() {
 			return FilterService.this;
 		}
 	}	

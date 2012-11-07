@@ -83,10 +83,8 @@ public class BrightnessSelector extends RelativeLayout {
 	  {
 	    ((TextView)findViewById(R.id.ExampleText)).setTextColor(Color.argb(FilterActivity.computeAlpha(paramInt), 255, 255, 255));
 	    TextView localTextView = (TextView)findViewById(R.id.BrightnessPercentage);
-	    Formatter localFormatter = new Formatter();
-	    Object[] arrayOfObject = new Object[1];
-	    arrayOfObject[0] = Double.valueOf(FilterActivity.computePercentage(paramInt));
-	    String str = localFormatter.format("%.1f%%", arrayOfObject).toString();
+	    Formatter formatter = new Formatter();
+	    String str = formatter.format("%.1f%%", Double.valueOf(FilterActivity.computePercentage(paramInt))).toString();
 	    if (paramInt == 100)
 	      str = "100%";
 	    localTextView.setText(str);

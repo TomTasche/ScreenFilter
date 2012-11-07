@@ -4,13 +4,6 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">Filter</string>
 
-    <string name="twofortyfouram_locale_application_not_available">Application is not installed.</string>
-    <string name="twofortyfouram_locale_breadcrumb_format">%1$s%2$s%3$s</string>
-    <string name="twofortyfouram_locale_breadcrumb_separator">" > "</string>
-    <string name="twofortyfouram_locale_marketactivity_dialog_title"><i>Locale</i> Required</string>
-    <string name="twofortyfouram_locale_marketactivity_dialog_button_install">Install</string>
-    <string name="twofortyfouram_locale_marketactivity_dialog_primary_message"><i>Locale</i> is required to use this plug-in. Would you like to install <i>Locale</i>?</string>
-    <string name="twofortyfouram_locale_marketactivity_dialog_secondary_message">Tap \"Install\" to find <i>Locale</i> on the Android Market.</string>
     <string name="app_name">Screen Filter</string>
     <string name="filter_enabled">Screen Filter enabled: %.1f%%</string>
     <string name="filter_disabled">Screen Filter disabled</string>

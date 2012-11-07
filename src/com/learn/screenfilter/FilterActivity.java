@@ -234,7 +234,7 @@ public class FilterActivity extends Activity {
 		toastView.setKeepScreenOn(false);
 		toastView.setLongClickable(false);
 		toastView.setFocusableInTouchMode(false);
-		toastView.setBackgroundDrawable(getBackgroundDrawable(progress));
+		toastView.setBackground(getBackgroundDrawable(progress));
 	    	
 		try {
 		      Method localMethod = View.class.getMethod("setFilterTouchesWhenObscured", Boolean.TYPE);

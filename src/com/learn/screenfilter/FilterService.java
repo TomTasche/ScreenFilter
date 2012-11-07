@@ -1,5 +1,6 @@
 package com.learn.screenfilter;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -20,10 +21,11 @@ public class FilterService extends Service {
 		return this.mBinder;
 	}
 
+	@TargetApi(5)
 	@Override
 	public void onCreate() {		
 	    super.onCreate();
-	    Toast.makeText(this, "My Service Created", Toast.LENGTH_LONG).show();		    
+	    Toast.makeText(this, "Filter Service Created", Toast.LENGTH_SHORT).show();		    
 	    Notification localNotification = FilterActivity.getNotification(getBaseContext());
 	    try
 	    {
@@ -34,7 +36,7 @@ public class FilterService extends Service {
 	    {
 	    	// Fall back to the old API    		
 			Log.w(LOGNAME, "Error calling startForeground");    		
-    		// setForeground(true); // For API level < 5
+    		//setForeground(true); // For API level < 5
     		mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
     		mNM.notify(mID, localNotification);
 	    }
@@ -42,12 +44,12 @@ public class FilterService extends Service {
 
 	@Override
 	public void onDestroy() {
-		Toast.makeText(this, "My Service Stopped", Toast.LENGTH_LONG).show();		
+		Toast.makeText(this, "Filter Service Stopped", Toast.LENGTH_SHORT).show();		
 	}
 	
 	@Override
 	public void onStart(Intent intent, int startid) {
-		Toast.makeText(this, "My Service Started", Toast.LENGTH_LONG).show();
+		Toast.makeText(this, "Filter Service Started", Toast.LENGTH_SHORT).show();
 	}	
 	
 	public class LocalBinder extends Binder

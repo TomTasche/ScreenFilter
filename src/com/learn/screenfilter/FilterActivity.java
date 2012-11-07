@@ -252,7 +252,7 @@ public class FilterActivity extends Activity {
 					| WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE 
 					| WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
 		localLayoutParams.format = PixelFormat.TRANSLUCENT;
-		localLayoutParams.windowAnimations = 0x1030004;
+		localLayoutParams.windowAnimations = android.R.style.Animation_Toast;
 		localLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
 		localLayoutParams.setTitle("Toast");
 		localLayoutParams.gravity = Gravity.FILL;

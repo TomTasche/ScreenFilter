@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +35,7 @@ public class BrightnessSelector extends RelativeLayout {
 	      public void onClick(View paramAnonymousView)
 	      {
 	        final EditText localEditText = new EditText(paramContext);
-	        localEditText.setInputType(3);
+	        localEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
 	        new AlertDialog.Builder(paramContext)
 	        		.setTitle(paramContext.getString(R.string.edit_brightness))
 	        		.setMessage(paramContext.getString(R.string.edit_brightness_message))

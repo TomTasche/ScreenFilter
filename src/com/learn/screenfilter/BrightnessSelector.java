@@ -20,23 +20,24 @@ import android.widget.TextView;
 import android.widget.Button;
 
 public class BrightnessSelector extends RelativeLayout {
-	  private SeekBar brightnessAdjust;
-	  private CheckBox softKeysEnabled;
+	private static final String TAG = "ScreenFilter:Selector";   
+	private SeekBar brightnessAdjust;
+	private CheckBox softKeysEnabled;
 
-	  public BrightnessSelector(final Context paramContext, AttributeSet paramAttributeSet)
-	  {
-	    super(paramContext, paramAttributeSet);
-	    View localView = ((LayoutInflater)paramContext.getSystemService("layout_inflater")).inflate(R.layout.brightness_selector, null);
-	    this.brightnessAdjust = ((SeekBar)localView.findViewById(R.id.BrightnessSeekBar));
-	    this.brightnessAdjust.setOnSeekBarChangeListener(new ProgressChangedHandler());
-	    this.softKeysEnabled = ((CheckBox)localView.findViewById(R.id.SoftKeysEnabled));
-	    ((Button)localView.findViewById(R.id.BrightnessEdit)).setOnClickListener(new View.OnClickListener()
-	    {
-	      public void onClick(View paramAnonymousView)
-	      {
-	        final EditText localEditText = new EditText(paramContext);
-	        localEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-	        new AlertDialog.Builder(paramContext)
+	public BrightnessSelector(final Context paramContext, AttributeSet paramAttributeSet)
+	{
+		super(paramContext, paramAttributeSet);
+		View localView = ((LayoutInflater)paramContext.getSystemService("layout_inflater")).inflate(R.layout.brightness_selector, null);
+		this.brightnessAdjust = ((SeekBar)localView.findViewById(R.id.BrightnessSeekBar));
+		this.brightnessAdjust.setOnSeekBarChangeListener(new ProgressChangedHandler());
+		this.softKeysEnabled = ((CheckBox)localView.findViewById(R.id.SoftKeysEnabled));
+		((Button)localView.findViewById(R.id.BrightnessEdit)).setOnClickListener(new Button.OnClickListener()
+		{
+			public void onClick(View paramAnonymousView)
+			{
+				final EditText localEditText = new EditText(paramContext);
+				localEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+				new AlertDialog.Builder(paramContext)
 	        		.setTitle(paramContext.getString(R.string.edit_brightness))
 	        		.setMessage(paramContext.getString(R.string.edit_brightness_message))
 	        		.setView(localEditText)
@@ -72,23 +73,28 @@ public class BrightnessSelector extends RelativeLayout {
 						            paramAnonymous2DialogInterface.dismiss();
 						          }
 						        })
-	        .create()
-	        .show();
-	      }
-	    });
-	    addView(localView);
-	    setProgress(82);
-	  }
+						        .create()
+						        .show();
+			}
+		});
+		
+		((Button)localView.findViewById(R.id.ColorEdit)).setOnClickListener(new ColorChangedHandler());
+		
+		addView(localView);
+		setProgress(82);
+	}
+	
 
 	  private void setExampleBrightness(int paramInt)
 	  {
-	    ((TextView)findViewById(R.id.ExampleText)).setTextColor(Color.argb(FilterActivity.computeAlpha(paramInt), 255, 255, 255));
-	    TextView localTextView = (TextView)findViewById(R.id.BrightnessPercentage);
-	    Formatter formatter = new Formatter();
-	    String str = formatter.format("%.1f%%", Double.valueOf(FilterActivity.computePercentage(paramInt))).toString();
-	    if (paramInt == 100)
-	      str = "100%";
-	    localTextView.setText(str);
+		  // TODO: Set the selected color here
+		  ((TextView)findViewById(R.id.ExampleText)).setTextColor(Color.argb(FilterActivity.computeAlpha(paramInt), 255, 255, 255));
+		  TextView localTextView = (TextView)findViewById(R.id.BrightnessPercentage);
+		  Formatter formatter = new Formatter();
+		  String str = formatter.format("%.1f%%", Double.valueOf(FilterActivity.computePercentage(paramInt))).toString();
+		  if (paramInt == 100)
+			  str = "100%";
+		  localTextView.setText(str);
 	  }
 
 	  public int getProgress()
@@ -111,7 +117,7 @@ public class BrightnessSelector extends RelativeLayout {
 	  {
 	    this.softKeysEnabled.setChecked(paramBoolean);
 	  }
-
+  
 	  private class ProgressChangedHandler
 	    implements SeekBar.OnSeekBarChangeListener
 	  {
@@ -131,5 +137,25 @@ public class BrightnessSelector extends RelativeLayout {
 	    public void onStopTrackingTouch(SeekBar paramSeekBar)
 	    {
 	    }
+	  }	 
+	  
+	  private void setExampleColor(int paramInt)
+	  {
+	  
 	  }
+	  
+	  private class ColorChangedHandler
+	    implements ColorPickerDialog.OnColorChangedListener,
+	    			Button.OnClickListener {
+		  public void colorChanged(int color) {
+			  // mPaint.setColor(color);
+			  Log.d(TAG, "Color set " + color);
+			  BrightnessSelector.this.setExampleColor(color);
+		  }
+		  
+		  public void onClick(View paramView)
+		  {
+			  new ColorPickerDialog(paramView.getContext(), this, 0xFFFF0000).show();
+		  }		  
+	  }	  
 }

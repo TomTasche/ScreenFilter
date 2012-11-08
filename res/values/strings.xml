@@ -7,8 +7,9 @@
     <string name="app_name">Screen Filter</string>
     <string name="filter_enabled">Screen Filter enabled: %.1f%%</string>
     <string name="filter_disabled">Screen Filter disabled</string>
-    <string name="test_text">This test text usually displays in 100% white. This shows you how the filter parameters you have specified will look once you have activated the Screen Filter app.</string>
+    <string name="test_text">This test text shows you how the filter parameters you have specified will look once you have activated the app.</string>
     <string name="brightness_desc">Adjust filter brightness</string>
+    <string name="color_desc">Choose filter color</string>
     <string name="enabled">Enabled</string>
     <string name="widget_loading">\?</string>
     <string name="click_to_adjust">Select to disable and adjust: %.1f%%</string>
@@ -26,7 +27,9 @@
     <string name="startup_notification">Starting up</string>
     <string name="widget_title">%.1f%%</string>
     <string name="edit_button">Edit</string>
+    <string name="coloredit_button">Color</string>
     <string name="edit_brightness">Set Brightness</string>
     <string name="edit_brightness_message" formatted="false">Input a brightness percentage integer between 0% and 100%.</string>
+    <string name="percent100">100%</string>
     
 </resources>

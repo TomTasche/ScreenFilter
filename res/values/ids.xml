@@ -14,4 +14,9 @@
     <item type="id" name="ReenableButton">false</item>
     <item type="id" name="ToggleImage">false</item>
     <item type="id" name="WidgetToggleText">false</item>
+    
+    <item type="id" name="TextViewColor">false</item>
+    <item type="id" name="ColorEdit">false</item>
+    <item type="id" name="ColorTable">false</item>
+     
 </resources>

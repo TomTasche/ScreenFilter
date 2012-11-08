@@ -163,7 +163,7 @@ public class FilterActivity extends Activity {
     }
     
     public static void hideNotification(Context context) {
-    	((NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE)).cancel(1);
+    	((NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE)).cancel(1234);
     }    
 
 	public static int computeAlpha(int paramInt)
@@ -234,7 +234,7 @@ public class FilterActivity extends Activity {
 		toastView.setKeepScreenOn(false);
 		toastView.setLongClickable(false);
 		toastView.setFocusableInTouchMode(false);
-		toastView.setBackground(getBackgroundDrawable(progress));
+		toastView.setBackgroundDrawable(getBackgroundDrawable(progress));
 	    	
 		try {
 		      Method localMethod = View.class.getMethod("setFilterTouchesWhenObscured", Boolean.TYPE);

@@ -23,17 +23,16 @@ Some behaviors of the ScreenFilter apps:
   > This is done by calling startForeground
   > Example of startForeground: https://github.com/commonsguy/cw-android/tree/master/Notifications/FakePlayer
   
-
   
 TODO:
-Major:
+- Implement functions related to color changed
+- Add color selection to preference, and pass it to toastView
 
-Enhancement:
-- Add color selection screen
+2012/11/08:
+- Added Color selection dialog from ApiDemo (need touch up)
 
 Closed: 
-- The button to reenable filter after setting change doesn't work, even though the ReenableListener is registered. .  
-  > Cause: The setContentView(preferences) was called twice. Once after the button listener is set.
-           The listeners should be set after layout applied. 
+- The button to reenable filter after setting change doesn't work, even though the ReenableListener is registered.
+  > Cause: The setContentView(preferences) was called twice. Once after the button listener is set.The listeners should be set after layout applied. 
 
 

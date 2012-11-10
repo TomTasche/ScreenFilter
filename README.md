@@ -25,8 +25,11 @@ Some behaviors of the ScreenFilter apps:
   
   
 TODO:
-- Implement functions related to color changed
-- Add color selection to preference, and pass it to toastView
+- Color selection seekbar?
+
+2012/11/10
+- Implemented functions related to color changed
+- Added color selection to preference, and pass it to toastView
 
 2012/11/08:
 - Added Color selection dialog from ApiDemo (need touch up)

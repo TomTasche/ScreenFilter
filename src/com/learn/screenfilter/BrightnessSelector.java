@@ -23,6 +23,7 @@ public class BrightnessSelector extends RelativeLayout {
 	private static final String TAG = "ScreenFilter:Selector";   
 	private SeekBar brightnessAdjust;
 	private CheckBox softKeysEnabled;
+	private int mColorRGB = Color.RED; //< Holding the color, only use the RGB components
 
 	public BrightnessSelector(final Context paramContext, AttributeSet paramAttributeSet)
 	{
@@ -83,51 +84,53 @@ public class BrightnessSelector extends RelativeLayout {
 		addView(localView);
 		setProgress(82);
 	}
-	
 
-	  private void setExampleBrightness(int paramInt)
-	  {
-		  // TODO: Set the selected color here
-		  ((TextView)findViewById(R.id.ExampleText)).setTextColor(Color.argb(FilterActivity.computeAlpha(paramInt), 255, 255, 255));
-		  TextView localTextView = (TextView)findViewById(R.id.BrightnessPercentage);
-		  Formatter formatter = new Formatter();
-		  String str = formatter.format("%.1f%%", Double.valueOf(FilterActivity.computePercentage(paramInt))).toString();
-		  if (paramInt == 100)
-			  str = "100%";
-		  localTextView.setText(str);
-	  }
+	private void setExampleBrightness(int progress)
+	{
+		((TextView)findViewById(R.id.ExampleText))
+		  			.setTextColor(Color.argb(FilterActivity.computeAlpha(progress), 
+		  							Color.red(mColorRGB), 
+		  							Color.green(mColorRGB),
+		  							Color.blue(mColorRGB)));
+		TextView localTextView = (TextView)findViewById(R.id.BrightnessPercentage);
+		Formatter formatter = new Formatter();
+		String str = formatter.format("%.1f%%", Double.valueOf(FilterActivity.computePercentage(progress))).toString();
+		if (progress == 100)
+			str = "100%";
+		localTextView.setText(str);
+	}
 
-	  public int getProgress()
-	  {
-	    return this.brightnessAdjust.getProgress();
-	  }
+	public int getProgress()
+	{
+		return this.brightnessAdjust.getProgress();
+	}
 
-	  public boolean isSoftKeysEnabled()
-	  {
-	    return this.softKeysEnabled.isChecked();
-	  }
+	public boolean isSoftKeysEnabled()
+	{
+		return this.softKeysEnabled.isChecked();
+	}
 
-	  public void setProgress(int paramInt)
-	  {
-	    this.brightnessAdjust.setProgress(paramInt);
+	public void setProgress(int paramInt)
+	{
+		this.brightnessAdjust.setProgress(paramInt);
 	    setExampleBrightness(paramInt);
-	  }
+	}
 
-	  public void setSoftKeysEnabled(boolean paramBoolean)
-	  {
-	    this.softKeysEnabled.setChecked(paramBoolean);
-	  }
+	public void setSoftKeysEnabled(boolean paramBoolean)
+	{
+		this.softKeysEnabled.setChecked(paramBoolean);
+	}
   
-	  private class ProgressChangedHandler
+	private class ProgressChangedHandler
 	    implements SeekBar.OnSeekBarChangeListener
-	  {
-	    private ProgressChangedHandler()
-	    {
-	    }
+	{
+		private ProgressChangedHandler()
+		{
+		}
 
 	    public void onProgressChanged(SeekBar paramSeekBar, int paramInt, boolean paramBoolean)
 	    {
-	      BrightnessSelector.this.setExampleBrightness(paramInt);
+	    	BrightnessSelector.this.setExampleBrightness(paramInt);
 	    }
 
 	    public void onStartTrackingTouch(SeekBar paramSeekBar)
@@ -137,25 +140,37 @@ public class BrightnessSelector extends RelativeLayout {
 	    public void onStopTrackingTouch(SeekBar paramSeekBar)
 	    {
 	    }
-	  }	 
+	}	 
 	  
-	  private void setExampleColor(int paramInt)
-	  {
+	private void setExampleColor(int color)
+	{
+		mColorRGB = color;
+		setExampleBrightness(getProgress());
+	}
 	  
-	  }
+	public int getColor()
+	{
+		return mColorRGB;
+	}
+	
+	public void setColor(int color) 
+	{
+		mColorRGB = color;
+		setExampleBrightness(getProgress());
+	}
 	  
-	  private class ColorChangedHandler
+	private class ColorChangedHandler
 	    implements ColorPickerDialog.OnColorChangedListener,
 	    			Button.OnClickListener {
-		  public void colorChanged(int color) {
+		public void colorChanged(int color) {
 			  // mPaint.setColor(color);
-			  Log.d(TAG, "Color set " + color);
+			  Log.d(TAG, "Color set " + Color.red(color) + " " + Color.green(color) + " " + Color.blue(color) );
 			  BrightnessSelector.this.setExampleColor(color);
-		  }
+		}
 		  
-		  public void onClick(View paramView)
-		  {
-			  new ColorPickerDialog(paramView.getContext(), this, 0xFFFF0000).show();
-		  }		  
-	  }	  
+		public void onClick(View paramView)
+		{
+			new ColorPickerDialog(paramView.getContext(), this, BrightnessSelector.this.getColor()).show();
+		}		  
+	}	  
 }

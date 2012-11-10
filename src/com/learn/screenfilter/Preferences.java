@@ -11,16 +11,16 @@ import android.widget.Button;
 public class Preferences extends Activity {
 	private static final String TAG = "ScreenFilter:Preferences"; 
 	private SharedPreferences prefs;
-	  private BrightnessSelector selector;
+	private BrightnessSelector selector;
 
-	  protected void onCreate(Bundle paramBundle) {
-	    super.onCreate(paramBundle);
+	protected void onCreate(Bundle paramBundle) {
+		super.onCreate(paramBundle);
 	    Log.d(TAG, "onCreate");
 	    onNewIntent(getIntent());
-	  }
+	}
 
-	  public void onNewIntent(Intent paramIntent) {
-	    Log.d(TAG, "onNewIntent");
+	public void onNewIntent(Intent paramIntent) {
+		Log.d(TAG, "onNewIntent");
 	    this.prefs = getSharedPreferences("preferences", 0);
 	    FilterActivity.hideFilter(this, false);
 	    
@@ -38,18 +38,21 @@ public class Preferences extends Activity {
 	    	);	    
 	    
 	    int i = FilterActivity.getBrightness(this);
+	    int color = FilterActivity.getColor(this);
 	    this.selector = ((BrightnessSelector)findViewById(R.id.PreferencesBrightnessSelector));
 	    this.selector.setProgress(i);
+	    this.selector.setColor(color);
 	    this.selector.setSoftKeysEnabled(this.prefs.getBoolean("SOFT_KEYS_ENABLED", true));	    
-	  }
+	}
 
-	  protected void onPause() {
-	    super.onPause();
+	protected void onPause() {
+		super.onPause();
 	    Log.d(TAG, "onPause");	   
 	    this.prefs.edit()
 	    			.putInt("NEW_BRIGHTNESS", this.selector.getProgress())
+	    			.putInt("NEW_COLOR", this.selector.getColor())
 	    			.putBoolean("SOFT_KEYS_ENABLED", this.selector.isSoftKeysEnabled())
 	    			.remove("TOO_LOW_CONFIRMED").commit();
 	    finish();
-	  }
+	}
 }

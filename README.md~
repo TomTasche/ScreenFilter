@@ -23,7 +23,6 @@ Some behaviors of the ScreenFilter apps:
   > This is done by calling startForeground
   > Example of startForeground: https://github.com/commonsguy/cw-android/tree/master/Notifications/FakePlayer
   
-
   
 TODO:
 - Implement functions related to color changed

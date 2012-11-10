@@ -30,6 +30,6 @@
     <string name="coloredit_button">Color</string>
     <string name="edit_brightness">Set Brightness</string>
     <string name="edit_brightness_message" formatted="false">Input a brightness percentage integer between 0% and 100%.</string>
-    <string name="percent100">100%</string>
+    <string name="percentfull">100%</string>
     
 </resources>

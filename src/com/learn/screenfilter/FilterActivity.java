@@ -33,6 +33,7 @@ import android.widget.Toast;
 public class FilterActivity extends Activity {
     private static final String TAG = "ScreenFilter:FilterActivity"; 
     private static int currentProgress = -1;
+    private static int currentColor = Color.RED;
     //! This flag indicates whether the activity is activated by widget (true). false if activated by launcher
     private static boolean directlyInitiated = false;
     //! This is the view that simulate the filter glass
@@ -58,12 +59,13 @@ public class FilterActivity extends Activity {
     
     public void onNewIntent(Intent paramIntent) {
     	Log.d(TAG, "onNewIntent");
-    	int progress = paramIntent.getIntExtra("NEW_BRIGHTNESS", -1);
+    	int progress = paramIntent.getIntExtra("NEW_BRIGHTNESS", -1);    	
 
         boolean enabling = false;
         boolean skipWarning = false;
         
         if (progress == -1) {
+        	// Get brightness setting from stored preferences
         	progress = getBrightness(this);
         	Log.d(TAG, "User-initiated filter; progress=" + progress);
 
@@ -80,6 +82,13 @@ public class FilterActivity extends Activity {
             
             skipWarning = true;            
         }
+        
+        int color = paramIntent.getIntExtra("NEW_COLOR", -1);
+        if (color == -1) {
+        	color = getColor(this); // Get color from stored preferences
+        } else {
+        	color = Color.RED;
+        }         
         
         boolean softKeysEnabled = false;
         if (paramIntent.hasExtra("SOFT_KEYS_ENABLED") != false) {
@@ -105,6 +114,7 @@ public class FilterActivity extends Activity {
         	if (enabling != false) {
         		Log.d(TAG, "Enabling filter service");
                 currentProgress = progress;
+                currentColor = color;
                 directlyInitiated = skipWarning;
                 showFilter(progress, softKeysEnabled);
                 startService(new Intent(this, FilterService.class));
@@ -189,6 +199,15 @@ public class FilterActivity extends Activity {
 	    	j = 82;
 	    
 	    return j;	    
+	}
+	
+	public static int getColor(Context paramContext)
+	{
+		SharedPreferences localSharedPreferences = paramContext.getSharedPreferences("preferences", 0);
+		int color = localSharedPreferences.getInt("NEW_COLOR", -1);
+		if (color == -1)
+			color = Color.RED;		
+		return color;
 	}
 	
 	private boolean shouldShowWarning(int paramInt)
@@ -277,9 +296,8 @@ public class FilterActivity extends Activity {
 	
 	private Drawable getBackgroundDrawable(int paramInt) {
 		int i = 255 - computeAlpha(paramInt);
-		Log.i(TAG, "Background alpha=" + i);
-		// TODO: Make the color of the filter configurable
-		return new ColorDrawable(Color.argb(i, 100, 0, 0));
+		Log.i(TAG, "Background alpha=" + i + ", Color = " + currentColor); 
+		return new ColorDrawable(Color.argb(i, Color.red(currentColor), Color.green(currentColor), Color.blue(currentColor)));
 	}
 	
 	public static double computePercentage(int paramInt) {

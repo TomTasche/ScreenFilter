@@ -22,7 +22,7 @@ public class ConfiguratorActivity extends Activity {
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
 						if (isChecked) {
-							changeTransparency(10);
+							changeTransparency(40);
 
 							changeBrightness(0.1f);
 						}

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content" 
         android:layout_marginTop="4.0dip" 
         android:layout_marginBottom="8.0dip" 
-        android:text="@string/reenable_button" />
+        android:text="Apply changes" />
 
     <com.learn.screenfilter.BrightnessSelector 
         android:id="@id/PreferencesBrightnessSelector" 

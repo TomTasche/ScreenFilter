@@ -1,68 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:id="@id/PreferencesLayout" 
-    android:layout_width="fill_parent" 
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:orientation="vertical" 
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content">
-        <TextView android:textSize="20.0dip" 
-            android:id="@id/TextView01" 
-            android:layout_width="wrap_content" 
-            android:layout_height="wrap_content" 
-            android:layout_marginTop="8.0dip" 
-            android:text="@string/brightness_desc" />
-        <TableLayout android:id="@id/SliderTable" 
-            android:layout_width="fill_parent" 
-            android:layout_height="wrap_content" 
-            android:layout_marginLeft="10.0dip" 
-            android:layout_marginTop="8.0dip" 
-            android:layout_marginRight="10.0dip" 
-            android:stretchColumns="1">
-			<TableRow android:gravity="center_vertical"> 
-                <Button android:textSize="14.0dip" 
-                    android:id="@id/BrightnessEdit" 
-                    android:paddingLeft="8.0dip" 
-                    android:paddingRight="8.0dip" 
-                    android:layout_width="wrap_content" 
-                    android:layout_height="wrap_content" 
-                    android:text="@string/edit_button" />			    
-                <SeekBar android:id="@id/BrightnessSeekBar" 
-                    android:layout_marginLeft="8.0dip" 
-                    android:layout_marginRight="8.0dip" /> 
-                <TextView android:textSize="18.0dip" 
-                    android:gravity="right" 
-                    android:id="@id/BrightnessPercentage" 
-                    android:text="@string/percentfull"/>
-            </TableRow> 
-            <TableRow android:gravity="center_vertical"> 
-                <Button android:textSize="14.0dip" 
-                    android:id="@id/ColorEdit" 
-                    android:paddingLeft="18.0dip" 
-                    android:paddingRight="8.0dip" 
-                    android:layout_width="wrap_content" 
-                    android:layout_height="wrap_content" 
-                    android:text="@string/coloredit_button" />              
-            </TableRow> 
-			
-        </TableLayout>	        
-        <TextView android:textSize="18.0dip" 
-            android:textColor="#ffffffff" 
-            android:id="@id/ExampleText" 
-            android:layout_width="wrap_content" 
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/PreferencesLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TableLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8.0dip" 
-            android:layout_marginTop="12.0dip" 
-            android:layout_marginRight="8.0dip" 
-            android:text="@string/test_text"            
-            android:lineSpacingExtra="6.0dip" />
-        <CheckBox android:textSize="18.0dip" 
-            android:gravity="center_vertical" 
-            android:id="@id/SoftKeysEnabled" 
-            android:layout_width="fill_parent" 
-            android:layout_height="wrap_content" 
-            android:layout_marginTop="8.0dip" 
-            android:checked="true" 
-            android:text="@string/softkey_option" />
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:layout_marginTop="8.0dip"
+            android:stretchColumns="0" >
+
+            <TableRow android:gravity="center_vertical" >
+
+                <SeekBar
+                    android:id="@+id/brightnessSeeker"
+                    android:layout_marginLeft="8.0dip"
+                    android:layout_marginRight="8.0dip" />
+
+                <TextView
+                    android:id="@+id/brightnessText"
+                    android:gravity="right"
+                    android:text="100%"
+                    android:textSize="18.0dip" />
+            </TableRow>
+        </TableLayout>
+
+        <TextView
+            android:id="@+id/sampleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8.0dip"
+            android:layout_marginRight="8.0dip"
+            android:layout_marginTop="12.0dip"
+            android:lineSpacingExtra="6.0dip"
+            android:text="DevFests are large-scale community events throughout the world, following the tradition of Google DevFests and organized by local user groups.\n
+This year there is for the first time a DevFest in Vienna, jointly organized by the Java Student User Group and the Google Developer Group Vienna.\n
+DevFest Vienna takes place on two days, 10. + 11. November 2012."
+            android:textColor="#ffffffff"
+            android:textSize="18.0dip" />
     </LinearLayout>
+
 </ScrollView>

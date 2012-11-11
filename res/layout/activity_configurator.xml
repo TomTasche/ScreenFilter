@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.learn.screenfilter"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose brightness mode:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <RadioGroup
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RadioButton
+            android:id="@+id/lowRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Very low" />
+
+        <RadioButton
+            android:id="@+id/middleRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Middle" />
+
+        <RadioButton
+            android:id="@+id/highRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="High" />
+
+        <RadioButton
+            android:id="@+id/festRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Very DevFest Vienna" />
+
+        <RadioButton
+            android:id="@+id/birthdayRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Happy Geburtstag" />
+
+        <RadioButton
+            android:id="@+id/androidRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello Android!" />
+    </RadioGroup>
+
+</LinearLayout>
